@@ -90,6 +90,7 @@ def gen_cli_args():
     credential_group.add_argument("--ignore-pw-decoding", action="store_true", help="Ignore non UTF-8 characters when decoding the password file")
     credential_group.add_argument("--no-bruteforce", action="store_true", help="No spray when using file for username and password (user1 => password1, user2 => password2)")
     credential_group.add_argument("--continue-on-success", action="store_true", help="continues authentication attempts even after successes")
+    credential_group.add_argument("--no-logon-failure", action="store_true", help="Don't show error messages for login failures (wrong password attempts)")
     credential_group.add_argument("--gfail-limit", metavar="LIMIT", type=int, help="max number of global failed login attempts")
     credential_group.add_argument("--ufail-limit", metavar="LIMIT", type=int, help="max number of failed login attempts per username")
     credential_group.add_argument("--fail-limit", metavar="LIMIT", type=int, help="max number of failed login attempts per host")

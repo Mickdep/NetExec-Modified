@@ -165,7 +165,11 @@ class smb(connection):
         self.no_ntlm = False
         self.protocol = "SMB"
         self.is_guest = None
-
+        print("=== Initializing Connection now ===")
+        print("Args: ")
+        print(args)
+        if args.no_logon_failure:
+            print("=== FOUND NO LOGON FAILURE")
         connection.__init__(self, args, db, host)
 
     def proto_logger(self):
@@ -442,10 +446,15 @@ class smb(connection):
             return True
         except SessionError as e:
             error, desc = e.getErrorString()
+            # If we don't want to see logon_failure, and it is a logon_failure, just return False.
+            if self.args.no_logon_failure and "STATUS_LOGON_FAILURE" in error:
+                return False
+            
             self.logger.fail(
                 f'{domain}\\{self.username}:{process_secret(self.password)} {error} {f"({desc})" if self.args.verbose else ""}',
                 color="magenta" if error in smb_error_status else "red",
             )
+
             if error not in smb_error_status:
                 self.inc_failed_login(username)
                 return False
